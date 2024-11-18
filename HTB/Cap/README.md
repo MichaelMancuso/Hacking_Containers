@@ -6,29 +6,14 @@ Cap provided a chance to exploit two simple yet interesting capabilities. First,
 
 
 <meta property="og:description" content="Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root." />
-<link rel="canonical" href="https://0xdf.gitlab.io/2021/10/02/htb-cap.html" />
-<meta property="og:url" content="https://0xdf.gitlab.io/2021/10/02/htb-cap.html" />
-<meta property="og:site_name" content="0xdf hacks stuff" />
-<meta property="og:image" content="https://0xdfimages.gitlab.io/img/cap-cover.png" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-10-02T13:45:00+00:00" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:image" content="https://0xdfimages.gitlab.io/img/cap-cover.png" />
-<meta property="twitter:title" content="HTB: Cap" />
-<meta name="twitter:site" content="@0xdf_" />
-<script type="application/ld+json">
 
-	Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root.", https://0xdf.gitlab.io/2021/10/02/htb-cap.html
  
 <link rel="stylesheet" href="/assets/css/bootstrap-toc.min.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/custom.css"> 
   <link rel="stylesheet" href="/assets/css/buymeacoffee.css">
-  
   <link rel="stylesheet" href="/assets/css/syntax.css">
   
-<link type="application/atom+xml" rel="alternate" href="https://0xdf.gitlab.io/feed.xml" title="0xdf hacks stuff" /><!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P056MVQVGM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
