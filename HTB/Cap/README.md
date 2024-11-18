@@ -22,8 +22,9 @@
 <meta property="twitter:title" content="HTB: Cap" />
 <meta name="twitter:site" content="@0xdf_" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2021-10-02T13:45:00+00:00","datePublished":"2021-10-02T13:45:00+00:00","description":"Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root.","headline":"HTB: Cap","image":"https://0xdfimages.gitlab.io/img/cap-cover.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://0xdf.gitlab.io/2021/10/02/htb-cap.html"},"url":"https://0xdf.gitlab.io/2021/10/02/htb-cap.html"}</script>
-<!-- End Jekyll SEO tag -->
+
+	Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root.", https://0xdf.gitlab.io/2021/10/02/htb-cap.html
+ 
 <link rel="stylesheet" href="/assets/css/bootstrap-toc.min.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/custom.css"> 
