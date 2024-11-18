@@ -1,15 +1,10 @@
 
 <!DOCTYPE html>
 <html lang="en"><head>
-  <meta name="name" content="HTB: Cap">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>HTB: Cap | 0xdf hacks stuff</title>
-<meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="HTB: Cap" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root." />
+
+Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root.
+
+
 <meta property="og:description" content="Cap provided a chance to exploit two simple yet interesting capabilities. First, there’s a website with an insecure direct object reference (IDOR) vulnerability, where the site will collect a PCAP for me, but I can also access other user’s PCAPs, to include one from the user of the box with their FTP credentials, which also provides SSH access as that user. With a shell, I’ll find that in order for the site to collect pcaps, it needs some privileges, which are provided via Linux capabilities, including one that I’ll abuse to get a shell as root." />
 <link rel="canonical" href="https://0xdf.gitlab.io/2021/10/02/htb-cap.html" />
 <meta property="og:url" content="https://0xdf.gitlab.io/2021/10/02/htb-cap.html" />
