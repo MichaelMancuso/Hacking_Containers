@@ -1,0 +1,9 @@
+# Nmap 7.94SVN scan initiated Mon Nov 18 00:03:12 2024 as: /usr/lib/nmap/nmap -p- -oA Trick_Ports 10.129.55.132
+Nmap scan report for 10.129.55.132
+Host is up (0.17s latency).
+Not shown: 65533 closed tcp ports (reset)
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+# Nmap done at Mon Nov 18 00:10:58 2024 -- 1 IP address (1 host up) scanned in 466.49 seconds
