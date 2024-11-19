@@ -1,0 +1,24 @@
+
+; <<>> DiG 9.20.2-1-Debian <<>> axfr @10.129.147.242 ctfolympus.htb
+; (1 server found)
+;; global options: +cmd
+ctfolympus.htb.		86400	IN	SOA	ns1.ctfolympus.htb. ns2.ctfolympus.htb. 2018042301 21600 3600 604800 86400
+ctfolympus.htb.		86400	IN	TXT	"prometheus, open a temporal portal to Hades (3456 8234 62431) and St34l_th3_F1re!"
+ctfolympus.htb.		86400	IN	A	192.168.0.120
+ctfolympus.htb.		86400	IN	NS	ns1.ctfolympus.htb.
+ctfolympus.htb.		86400	IN	NS	ns2.ctfolympus.htb.
+ctfolympus.htb.		86400	IN	MX	10 mail.ctfolympus.htb.
+crete.ctfolympus.htb.	86400	IN	CNAME	ctfolympus.htb.
+hades.ctfolympus.htb.	86400	IN	CNAME	ctfolympus.htb.
+mail.ctfolympus.htb.	86400	IN	A	192.168.0.120
+ns1.ctfolympus.htb.	86400	IN	A	192.168.0.120
+ns2.ctfolympus.htb.	86400	IN	A	192.168.0.120
+rhodes.ctfolympus.htb.	86400	IN	CNAME	ctfolympus.htb.
+RhodesColossus.ctfolympus.htb. 86400 IN	TXT	"Here lies the great Colossus of Rhodes"
+www.ctfolympus.htb.	86400	IN	CNAME	ctfolympus.htb.
+ctfolympus.htb.		86400	IN	SOA	ns1.ctfolympus.htb. ns2.ctfolympus.htb. 2018042301 21600 3600 604800 86400
+;; Query time: 243 msec
+;; SERVER: 10.129.147.242#53(10.129.147.242) (TCP)
+;; WHEN: Tue Nov 19 01:04:40 CST 2024
+;; XFR size: 15 records (messages 1, bytes 475)
+

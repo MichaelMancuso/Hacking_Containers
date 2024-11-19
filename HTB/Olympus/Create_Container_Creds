@@ -1,0 +1,6 @@
+Back at the original nmap, there was ssh open on port 2222. With some new passwords in hand, try logging in. Both zeus and root failed with both “flightoficarus” and “Too_cl0se_to_th3_Sun”. But there’s be several hints here that we’re talking about Icarus:
+
+The 802.11 password, “flightoficarus”
+The network name “Too_cl0se_to_th3_Sun”
+We’ll see later that the first container was named Create, and Icarus and his father escate from Create
+If we ssh as icarus with password Too_cl0se_to_th3_Sun worked!

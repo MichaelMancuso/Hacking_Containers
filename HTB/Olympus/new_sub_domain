@@ -1,0 +1,12 @@
+icarus@620b296204a3:~$ whoami
+icarus
+icarus@620b296204a3:~$ pwd
+/home/icarus
+icarus@620b296204a3:~$ ls
+help_of_the_gods.txt
+icarus@620b296204a3:~$ cat help_of_the_gods.txt 
+
+Athena goddess will guide you through the dark...
+
+Way to Rhodes...
+ctfolympus.htb
