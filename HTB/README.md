@@ -8,9 +8,6 @@ Cap - This box involves Docker misconfiguration for privilege escalation,
 and it’s an excellent starting point for learning about basic container enumeration and exploitation.
 
 
-Shocker - Features a simple Docker exploit path. Useful for understanding Docker container breakout in a basic scenario.
-
-
 Intermediate Level
 
 Trickster - This box involves Kubernetes misconfigurations. 
@@ -18,6 +15,7 @@ The challenge revolves around enumerating Kubernetes resources and leveraging mi
 
 Tabby - Contains Docker misconfigurations and provides a good blend of web application vulnerabilities leading to container-based escalation.
 
+Olympus
 
 Advanced Level
 
