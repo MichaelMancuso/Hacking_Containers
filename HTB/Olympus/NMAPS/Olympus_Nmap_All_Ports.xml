@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.94SVN scan initiated Mon Nov 18 23:42:00 2024 as: /usr/lib/nmap/nmap -p- -sC -sV -oA Olympus_Nmap_All_Ports 10.129.147.242 -->
+<nmaprun scanner="nmap" args="/usr/lib/nmap/nmap -p- -sC -sV -oA Olympus_Nmap_All_Ports 10.129.147.242" start="1731994920" startstr="Mon Nov 18 23:42:00 2024" version="7.94SVN" xmloutputversion="1.05">
+<scaninfo type="syn" protocol="tcp" numservices="65535" services="1-65535"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<hosthint><status state="up" reason="unknown-response" reason_ttl="0"/>
+<address addr="10.129.147.242" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+</hosthint>
+<host starttime="1731994920" endtime="1731995920"><status state="up" reason="echo-reply" reason_ttl="63"/>
+<address addr="10.129.147.242" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><extraports state="closed" count="65531">
+<extrareasons reason="reset" count="65531" proto="tcp" ports="1-21,23-52,54-79,81-2221,2223-65535"/>
+</extraports>
+<port protocol="tcp" portid="22"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="ssh" method="table" conf="3"/></port>
+<port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="62"/><service name="domain" extrainfo="unknown banner: Bind" servicefp="SF-Port53-TCP:V=7.94SVN%I=7%D=11/18%Time=673C2901%P=x86_64-pc-linux-gnu%r(DNSVersionBindReqTCP,3F,&quot;\0=\0\x06\x85\0\0\x01\0\x01\0\x01\0\0\x07version\x04bind\0\0\x10\0\x03\xc0\x0c\0\x10\0\x03\0\0\0\0\0\x05\x04Bind\xc0\x0c\0\x02\0\x03\0\0\0\0\0\x02\xc0\x0c&quot;);" method="probed" conf="10"/><script id="fingerprint-strings" output="&#xa;  DNSVersionBindReqTCP: &#xa;    version&#xa;    bind&#xa;    Bind"><elem key="DNSVersionBindReqTCP">&#xa;    version&#xa;    bind&#xa;    Bind</elem>
+</script><script id="dns-nsid" output="&#xa;  bind.version: Bind"><elem key="bind.version">Bind</elem>
+</script></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="62"/><service name="http" product="Apache httpd" method="probed" conf="10"><cpe>cpe:/a:apache:http_server</cpe></service><script id="http-server-header" output="Apache"><elem>Apache</elem>
+</script><script id="http-title" output="Crete island - Olympus HTB"><elem key="title">Crete island - Olympus HTB</elem>
+</script></port>
+<port protocol="tcp" portid="2222"><state state="open" reason="syn-ack" reason_ttl="62"/><service name="ssh" extrainfo="protocol 2.0" servicefp="SF-Port2222-TCP:V=7.94SVN%I=7%D=11/18%Time=673C28FC%P=x86_64-pc-linux-gnu%r(NULL,29,&quot;SSH-2\.0-City\x20of\x20olympia\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\r\n&quot;);" method="probed" conf="10"/><script id="ssh-hostkey" output="&#xa;  2048 f2:ba:db:06:95:00:ec:05:81:b0:93:60:32:fd:9e:00 (RSA)&#xa;  256 79:90:c0:3d:43:6c:8d:72:19:60:45:3c:f8:99:14:bb (ECDSA)&#xa;  256 f8:5b:2e:32:95:03:12:a3:3b:40:c5:11:27:ca:71:52 (ED25519)"><table>
+<elem key="bits">2048</elem>
+<elem key="type">ssh-rsa</elem>
+<elem key="key">AAAAB3NzaC1yc2EAAAADAQABAAABAQCohNsiG9F7o0LDtwsBg/e+/wmnvepC5grY6lbmsSPVpFgEckWVAqzxk14cLSrD2FUWL3K1YXN/aA9CVE3lZXZAS+NLArEcX3qCUwLV1Oz0Foypq0xMmE8jla7YhHGn5ejxPSLwOZv7UezC5kWpGHQBlM/6FIFnUgH000vDg+88mdUL5bibA1DZbV6HWS3DvP2nW4UAv7opOJacwkh/hdU+NZ9Ztn5ifrjsHBb9plFAUY3DoqDNhZ/3D70oyBmzT12/alBL/gpFQC6hHZkf4ljHA8He0IdN3kohX1Fwt/dppYRTbfMsPDFgRxJ07c8uknEax71PQaSgL9VqOZ+BfOLD</elem>
+<elem key="fingerprint">f2badb069500ec0581b0936032fd9e00</elem>
+</table>
+<table>
+<elem key="bits">256</elem>
+<elem key="type">ecdsa-sha2-nistp256</elem>
+<elem key="key">AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGT58ZASVhHjRcHlNFWjmC7p0mf9hcGv7L970l+lT/X9INrsBpOpduOaf93G4L4LMNuDNzhMFIFAFFQS6JL5uwA=</elem>
+<elem key="fingerprint">7990c03d436c8d721960453cf89914bb</elem>
+</table>
+<table>
+<elem key="bits">256</elem>
+<elem key="type">ssh-ed25519</elem>
+<elem key="key">AAAAC3NzaC1lZDI1NTE5AAAAIHovT0TzbV0tvldAQEx/5i+4kFYDBVFbVF/6q1SuAJ5O</elem>
+<elem key="fingerprint">f85b2e32950312a33b40c51127ca7152</elem>
+</table>
+</script><script id="fingerprint-strings" output="&#xa;  NULL: &#xa;    SSH-2.0-City of olympia"><elem key="NULL">&#xa;    SSH-2.0-City of olympia</elem>
+</script></port>
+</ports>
+<times srtt="172650" rttvar="44008" to="348682"/>
+</host>
+<runstats><finished time="1731995920" timestr="Mon Nov 18 23:58:40 2024" summary="Nmap done at Mon Nov 18 23:58:40 2024; 1 IP address (1 host up) scanned in 1000.01 seconds" elapsed="1000.01" exit="success"/><hosts up="1" down="0" total="1"/>
+</runstats>
+</nmaprun>
